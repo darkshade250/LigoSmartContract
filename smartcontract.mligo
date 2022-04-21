@@ -1,8 +1,18 @@
 type storage = unit
-type parameter = unit
+type parameter = Make_transaction of (tez) | Empty
 type result = operation list * storage
 
 let no_operation : operation list = []
 
-let main (_parameter, store : parameter * storage) : result =
-    (no_operation, store)
+
+
+let make_transaction (input, store:(tez) * storage):result =
+    (failwith("Transaction Denied"):result)
+    
+
+
+let main (parameter, store : parameter * storage) : result =
+    match parameter with
+        Make_transaction input -> make_transaction(input,store)
+        | Empty -> (([] : operation list),store) 
+        
