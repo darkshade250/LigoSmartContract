@@ -1,8 +1,8 @@
-{ parameter (or (unit %empty) (mutez %make_transaction)) ;
+{ parameter (or (unit %drain) (mutez %refill)) ;
   storage nat ;
   code { UNPAIR ;
          IF_LEFT
-           { DROP ; NIL operation ; PAIR }
+           { DROP 2 ; PUSH string "Draining~" ; FAILWITH }
            { PUSH mutez 10000000 ;
              SWAP ;
              COMPARE ;

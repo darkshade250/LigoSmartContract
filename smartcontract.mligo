@@ -1,5 +1,5 @@
 type storage = nat
-type parameter = Make_transaction of (tez) | Empty
+type parameter = Refill of (tez) | Drain
 type result = operation list * storage
 
 let no_operation : operation list = []
@@ -10,7 +10,10 @@ let make_transaction (input, store:(tez) * storage):result =
     else
         (failwith("Incorrect amount, Please transfer 10 tez"):result)
 
+let draining():result=
+    (failwith("Draining~"):result)
+
 let main (parameter, store : parameter * storage) : result =
     match parameter with
-        Make_transaction input -> make_transaction(input,store)
-        | Empty -> (([] : operation list),store)
+        Refill input -> make_transaction(input,store)
+        | Drain -> draining()
