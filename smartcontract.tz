@@ -7,8 +7,6 @@
              SWAP ;
              COMPARE ;
              EQ ;
-             IF { PUSH nat 1 ; SWAP ; DUP ; DUG 2 ; ADD ; DROP }
-                { PUSH string "Incorrect amount of tez! Please send 10 tez" ; FAILWITH } ;
-             NIL operation ;
-             PAIR } } }
+             IF { PUSH nat 1 ; ADD ; NIL operation ; PAIR }
+                { DROP ; PUSH string "Incorrect amount, Please transfer 10 tez" ; FAILWITH } } } }
 
