@@ -2,14 +2,14 @@
   storage nat ;
   code { UNPAIR ;
          IF_LEFT
-           { DROP ;
-             PUSH address "KT1KJUgWMo8UEvqDhBtLMc2M42XJNgfJRttQ" ;
+           { DROP 2 ;
+             SENDER ;
              CONTRACT unit ;
              IF_NONE { PUSH string "Contract not found." ; FAILWITH } {} ;
-             PUSH mutez 10000000 ;
+             BALANCE ;
              UNIT ;
              TRANSFER_TOKENS ;
-             SWAP ;
+             PUSH nat 0 ;
              NIL operation ;
              DIG 2 ;
              CONS ;
