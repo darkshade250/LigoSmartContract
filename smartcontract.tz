@@ -1,23 +1,39 @@
 { parameter (or (unit %drain) (mutez %refill)) ;
-  storage nat ;
-  code { UNPAIR ;
+  storage unit ;
+  code { EMPTY_BIG_MAP address int ;
+         PUSH int 0 ;
+         SOME ;
+         PUSH address "tz1hMVfAtsmE7XA1jF8yLFKkPnJuDNFFfjVC" ;
+         UPDATE ;
+         SWAP ;
+         UNPAIR ;
          IF_LEFT
            { DROP 2 ;
              SENDER ;
              CONTRACT unit ;
              IF_NONE { PUSH string "Contract not found." ; FAILWITH } {} ;
-             BALANCE ;
-             UNIT ;
-             TRANSFER_TOKENS ;
-             PUSH nat 0 ;
-             NIL operation ;
-             DIG 2 ;
-             CONS ;
-             PAIR }
-           { PUSH mutez 10000000 ;
+             SWAP ;
+             SENDER ;
+             MEM ;
+             PUSH bool True ;
              SWAP ;
              COMPARE ;
              EQ ;
-             IF { PUSH nat 1 ; ADD ; NIL operation ; PAIR }
+             IF { BALANCE ;
+                  UNIT ;
+                  TRANSFER_TOKENS ;
+                  UNIT ;
+                  NIL operation ;
+                  DIG 2 ;
+                  CONS ;
+                  PAIR }
+                { DROP ; PUSH string "User does not has permission to drain" ; FAILWITH } }
+           { DIG 2 ;
+             DROP ;
+             PUSH mutez 10000000 ;
+             SWAP ;
+             COMPARE ;
+             EQ ;
+             IF { NIL operation ; PAIR }
                 { DROP ; PUSH string "Incorrect amount, Please transfer 10 tez" ; FAILWITH } } } }
 
